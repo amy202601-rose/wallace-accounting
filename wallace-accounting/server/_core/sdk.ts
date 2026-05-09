@@ -272,7 +272,7 @@ class SDKServer {
   }
 
   async authenticateRequest(req: Request): Promise<User> {
-    if (!ENV.isProduction && !ENV.oAuthServerUrl) {
+    if ((!ENV.isProduction && !ENV.oAuthServerUrl) || ENV.localAuthEnabled) {
       return createLocalDevUser();
     }
 
