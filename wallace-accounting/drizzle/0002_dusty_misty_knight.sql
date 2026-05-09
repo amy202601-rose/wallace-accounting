@@ -1,0 +1,40 @@
+CREATE TABLE `t4a_recipients` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`userId` int NOT NULL,
+	`firstName` varchar(64) NOT NULL,
+	`lastName` varchar(64) NOT NULL,
+	`sinOrBn` varchar(16),
+	`address` varchar(256),
+	`city` varchar(64),
+	`province` varchar(4),
+	`postalCode` varchar(16),
+	`country` varchar(4) DEFAULT 'CAN',
+	`email` varchar(320),
+	`phone` varchar(32),
+	`notes` text,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `t4a_recipients_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `t4a_records` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`userId` int NOT NULL,
+	`recipientId` int NOT NULL,
+	`taxYear` int NOT NULL,
+	`payerName` varchar(128) NOT NULL,
+	`payerBn` varchar(16),
+	`payerAddress` varchar(256),
+	`box016` decimal(12,2) DEFAULT '0.00',
+	`box020` decimal(12,2) DEFAULT '0.00',
+	`box022` decimal(12,2) DEFAULT '0.00',
+	`box024` decimal(12,2) DEFAULT '0.00',
+	`box028` decimal(12,2) DEFAULT '0.00',
+	`box048` decimal(12,2) DEFAULT '0.00',
+	`box105` decimal(12,2) DEFAULT '0.00',
+	`status` enum('draft','final') NOT NULL DEFAULT 'draft',
+	`notes` text,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `t4a_records_id` PRIMARY KEY(`id`)
+);
