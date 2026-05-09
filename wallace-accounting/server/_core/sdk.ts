@@ -18,6 +18,21 @@ import type {
 const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.length > 0;
 
+function createLocalDevUser(): User {
+  const now = new Date();
+  return {
+    id: 1,
+    openId: "local-dev-user",
+    name: "Local Developer",
+    email: "local-dev@wallace.test",
+    loginMethod: "local-dev",
+    role: "admin",
+    createdAt: now,
+    updatedAt: now,
+    lastSignedIn: now,
+  };
+}
+
 export type SessionPayload = {
   openId: string;
   appId: string;
@@ -257,6 +272,10 @@ class SDKServer {
   }
 
   async authenticateRequest(req: Request): Promise<User> {
+    if (!ENV.isProduction && !ENV.oAuthServerUrl) {
+      return createLocalDevUser();
+    }
+
     // Regular authentication flow
     const cookies = this.parseCookies(req.headers.cookie);
     const sessionCookie = cookies.get(COOKIE_NAME);
