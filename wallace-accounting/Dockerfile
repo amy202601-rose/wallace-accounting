@@ -15,7 +15,10 @@ FROM base AS runtime
 ENV NODE_ENV=production
 COPY package.json pnpm-lock.yaml ./
 COPY patches ./patches
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile
 COPY --from=build /app/dist ./dist
+COPY drizzle ./drizzle
+COPY drizzle.config.ts ./
+COPY tsconfig.json ./
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
